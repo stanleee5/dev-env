@@ -194,6 +194,7 @@ install_plugins() {
 # ruff는 config/requirements.txt(pip)로 설치된다. 여기서는 나머지를 담당한다.
 
 readonly LUALS_VERSION="3.19.1"
+readonly MARKSMAN_VERSION="2026-02-08"
 
 install_language_servers() {
     # pyright + bash-language-server: npm으로 진짜 바이너리를 PATH에 설치
@@ -201,15 +202,23 @@ install_language_servers() {
     local npm_servers=()
     command -v pyright-langserver &>/dev/null || npm_servers+=(pyright)
     command -v bash-language-server &>/dev/null || npm_servers+=(bash-language-server)
+    command -v vscode-json-language-server &>/dev/null || npm_servers+=(vscode-langservers-extracted)
+    command -v yaml-language-server &>/dev/null || npm_servers+=(yaml-language-server)
+    command -v taplo &>/dev/null || npm_servers+=(@taplo/cli)
     if [[ ${#npm_servers[@]} -gt 0 ]]; then
         log "Installing npm language servers: ${npm_servers[*]}..."
         npm install -g "${npm_servers[@]}" 2>&1 | tee -a "$LOG_FILE" || \
             log_warning "npm language server installation encountered issues."
     else
-        log_success "pyright-langserver and bash-language-server already available."
+        log_success "All npm language servers already available."
     fi
 
-    # lua-language-server: GitHub 릴리스 tarball (linux x64 전용; macOS는 brew 사용)
+    install_luals
+    install_marksman
+}
+
+# lua-language-server: GitHub 릴리스 tarball (linux x64 전용; macOS는 brew 사용)
+install_luals() {
     if command -v lua-language-server &>/dev/null; then
         log_success "lua-language-server already available."
         return 0
@@ -242,6 +251,38 @@ install_language_servers() {
         log_success "lua-language-server $LUALS_VERSION installed."
     else
         log_warning "lua-language-server download failed; skipping."
+    fi
+    rm -rf "$tmp"
+}
+
+# marksman (Markdown LSP): GitHub 릴리스 단일 바이너리 (linux x64 전용; macOS는 brew 사용)
+install_marksman() {
+    if command -v marksman &>/dev/null; then
+        log_success "marksman already available."
+        return 0
+    fi
+    if [[ "$(uname -s)" != "Linux" || "$(uname -m)" != "x86_64" ]]; then
+        log_warning "marksman: unsupported platform ($(uname -sm)); install manually (e.g. brew install marksman)."
+        return 0
+    fi
+
+    local url="https://github.com/artempyanykh/marksman/releases/download/$MARKSMAN_VERSION/marksman-linux-x64"
+    local tmp
+    tmp=$(mktemp -d)
+    log "Downloading marksman $MARKSMAN_VERSION..."
+    if curl -fL -o "$tmp/marksman" "$url" 2>&1 | tee -a "$LOG_FILE"; then
+        chmod +x "$tmp/marksman"
+        if is_docker; then
+            mv "$tmp/marksman" /usr/local/bin/marksman
+        else
+            # sudo 없이 유저 소유로 설치
+            mkdir -p "$BASE_DIR/.local/bin"
+            mv "$tmp/marksman" "$BASE_DIR/.local/bin/marksman"
+            add_block_to_shell_configs "export PATH=\"$BASE_DIR/.local/bin:\$PATH\"" "\.local/bin"
+        fi
+        log_success "marksman $MARKSMAN_VERSION installed."
+    else
+        log_warning "marksman download failed; skipping."
     fi
     rm -rf "$tmp"
 }

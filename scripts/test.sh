@@ -87,6 +87,10 @@ main() {
     check "ruff"                 "command -v ruff"
     check "bash-language-server" "command -v bash-language-server"
     check "lua-language-server"  "command -v lua-language-server"
+    check "json-language-server"  "command -v vscode-json-language-server"
+    check "yaml-language-server"  "command -v yaml-language-server"
+    check "taplo"                "command -v taplo"
+    check "marksman"             "command -v marksman"
 
     # Node.js
     check_output "Node.js" "node --version"

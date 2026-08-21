@@ -12,9 +12,9 @@ Docker 기반의 포터블 개발환경 부트스트랩.
 |---|---|
 | **Zsh** | Oh My Zsh, 합리적인 기본값 |
 | **Tmux** | TPM + [tmux-powerkit](https://github.com/fabioluciano/tmux-powerkit) (tokyo-night) |
-| **Neovim** | lazy.nvim, 네이티브 LSP (pyright, ruff, bashls, lua_ls), blink.cmp, treesitter — 플러그인이 이미지에 미리 sync됨 |
+| **Neovim** | lazy.nvim, 네이티브 LSP (pyright, ruff, bashls, lua_ls, jsonls, yamlls, taplo, marksman — JSON/YAML은 schemastore 기반 자동완성, k8s 매니페스트 포함), blink.cmp, treesitter — 플러그인이 이미지에 미리 sync됨 |
 | **Python** | `config/requirements.txt`의 개발/노트북 필수 패키지 (ruff, black, jupyterlab, nvitop, …) |
-| **Node.js** | npm 기반 LSP 서버(pyright, bash-language-server)의 필수 의존성. Claude Code 설치에도 사용 |
+| **Node.js** | npm 기반 LSP 서버(pyright, bashls, jsonls, yamlls, taplo)의 필수 의존성. Claude Code 설치에도 사용 |
 | **Claude Code** | 최신 버전 + 커스텀 2줄 statusline (git 상태, 컨텍스트 바, 비용, rate limit) |
 
 ## 개발 이미지 빌드

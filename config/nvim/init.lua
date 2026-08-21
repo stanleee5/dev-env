@@ -50,7 +50,7 @@ require("lazy").setup({
       end
       configs.setup({
         ensure_installed = {"bash", "json", "python", "c", "cpp", "cuda", "lua",
-                            "markdown", "markdown_inline"},
+                            "markdown", "markdown_inline", "toml", "yaml"},
         sync_install = true,
         highlight = { enable = true },
         indent = { enable = true },
@@ -112,7 +112,8 @@ require("lazy").setup({
 
   -- Native LSP (nvim 0.11+): 서버 정의는 nvim-lspconfig, 설정/키맵은 plugins/lsp.lua
   { "neovim/nvim-lspconfig",
-    dependencies = { "saghen/blink.cmp" },
+    -- schemastore.nvim: jsonls/yamlls에 잘 알려진 파일들의 JSON Schema 카탈로그 제공
+    dependencies = { "saghen/blink.cmp", "b0o/schemastore.nvim" },
     config = function() require("plugins.lsp") end,
   },
 

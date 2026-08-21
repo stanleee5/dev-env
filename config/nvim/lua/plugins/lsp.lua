@@ -55,12 +55,46 @@ vim.lsp.config("lua_ls", {
 
 -- bashls: shellcheck가 PATH에 있으면 자동으로 lint까지 수행한다
 
+-- jsonls/yamlls: schemastore.nvim의 카탈로그로 잘 알려진 파일들
+-- (package.json, GitHub Actions, docker-compose 등)의 키 자동완성/검증을 얻는다
+local ok_ss, schemastore = pcall(require, "schemastore")
+
+vim.lsp.config("jsonls", {
+  settings = {
+    json = {
+      schemas = ok_ss and schemastore.json.schemas() or {},
+      validate = { enable = true },
+    },
+  },
+})
+
+vim.lsp.config("yamlls", {
+  settings = {
+    yaml = {
+      -- 서버 내장 schemastore 대신 schemastore.nvim이 카탈로그를 제공한다
+      schemaStore = { enable = false, url = "" },
+      -- kubernetes 스키마는 파일명으로 매칭이 안 되므로 명시적 glob이 필요.
+      -- helm templates/는 go 템플릿이라 제외 (유효한 YAML이 아니어서 진단 스팸이 된다)
+      schemas = vim.tbl_extend("force",
+        ok_ss and schemastore.yaml.schemas() or {},
+        { kubernetes = { "*.k8s.yaml", "k8s/**/*.{yml,yaml}", "manifests/**/*.{yml,yaml}" } }),
+    },
+  },
+})
+
+-- taplo(TOML): pyproject.toml 등의 스키마 검증/자동완성 (내장 schemastore 사용)
+-- marksman(Markdown): 링크 자동완성/검증, 헤딩 go-to-definition
+
 -- 바이너리가 있는 서버만 활성화 (서버 없는 호스트에서 경고 스팸 방지)
 local servers = {
   pyright = "pyright-langserver",
   ruff = "ruff",
   bashls = "bash-language-server",
   lua_ls = "lua-language-server",
+  jsonls = "vscode-json-language-server",
+  yamlls = "yaml-language-server",
+  taplo = "taplo",
+  marksman = "marksman",
 }
 for name, bin in pairs(servers) do
   if vim.fn.executable(bin) == 1 then

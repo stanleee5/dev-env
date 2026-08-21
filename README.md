@@ -12,9 +12,9 @@ Take any base image — typically an ML/AI training image (`sglang`, `axolotl`, 
 |---|---|
 | **Zsh** | Oh My Zsh, sensible defaults |
 | **Tmux** | TPM + [tmux-powerkit](https://github.com/fabioluciano/tmux-powerkit) (tokyo-night) |
-| **Neovim** | lazy.nvim, native LSP (pyright, ruff, bashls, lua_ls), blink.cmp, treesitter — plugins pre-synced into the image |
+| **Neovim** | lazy.nvim, native LSP (pyright, ruff, bashls, lua_ls, jsonls, yamlls, taplo, marksman — JSON/YAML get schemastore-backed completion, incl. k8s manifests), blink.cmp, treesitter — plugins pre-synced into the image |
 | **Python** | dev/notebook essentials from `config/requirements.txt` (ruff, black, jupyterlab, nvitop, …) |
-| **Node.js** | for the npm-based LSP servers (pyright, bash-language-server); also used to install Claude Code |
+| **Node.js** | for the npm-based LSP servers (pyright, bashls, jsonls, yamlls, taplo); also used to install Claude Code |
 | **Claude Code** | latest, plus a custom 2-line statusline (git status, context bar, cost, rate limits) |
 
 ## Build a dev image
