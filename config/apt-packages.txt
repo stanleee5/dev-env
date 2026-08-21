@@ -1,0 +1,24 @@
+# Base system packages for the dev image
+# One package per line. Lines starting with # are comments.
+ca-certificates
+curl
+file
+# treesitter 파서 컴파일용. libc6-dev는 gcc의 Recommends일 뿐이라 명시가 필요하다.
+gcc
+libc6-dev
+git
+htop
+jq
+fd-find
+ripgrep
+# bash-language-server가 lint 백엔드로 사용
+shellcheck
+sudo
+tmux
+tree
+tzdata
+vim
+wget
+xclip
+yank
+zsh

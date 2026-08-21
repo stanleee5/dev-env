@@ -1,0 +1,15 @@
+black
+python-dotenv
+gpustat
+icecream
+ipykernel
+ipywidgets
+isort
+jupyterlab
+loguru
+nvitop
+orjson
+orjsonl
+pandas
+ruff
+tabulate

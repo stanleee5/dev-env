@@ -1,0 +1,29 @@
+# --- Local Claude Code state (per-machine, not shareable) ---
+.claude/*
+!.claude/settings.json
+
+# --- Local/secret config ---
+.env
+.env.*
+!.env.example
+
+# --- NFS silly-rename leftovers (created when an open file is unlinked on NFS) ---
+.nfs*
+
+# --- Editor swap/backup files ---
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# --- OS metadata ---
+.DS_Store
+Thumbs.db
+
+# --- Setup logs (utils.sh tees to /tmp/setup.log; catch stragglers anywhere) ---
+setup.log
+*.log
+
+# --- Internal build wrappers (registry paths, in-house build CLI) ---
+internal/

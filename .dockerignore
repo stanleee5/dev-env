@@ -1,0 +1,32 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Build scripts (not needed in image)
+build.sh
+
+# Internal build wrappers
+internal
+
+# Test files
+scripts/test.sh
+
+# Documentation
+*.md
+README*
+
+# Temporary files
+*.tmp
+*.log
+*~
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
